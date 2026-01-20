@@ -8,9 +8,10 @@ import { Button } from "@/components/ui/Button";
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,21 +19,30 @@ export default function AdminLoginPage() {
 
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/admin/login`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/admin/login`,
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include", // ✅ important
           body: JSON.stringify({ email, password }),
         }
       );
 
       const data = await res.json();
-      if (!res.ok) throw new Error();
 
+      if (!res.ok) {
+        throw new Error(data.message || "Login failed");
+      }
+
+      // ✅ store token
       localStorage.setItem("adminToken", data.token);
+
+      // ✅ redirect
       router.push("/admin/dashboard");
-    } catch {
-      alert("Admin login failed");
+    } catch (error: any) {
+      alert(error.message || "Admin login failed");
     } finally {
       setLoading(false);
     }
@@ -48,6 +58,7 @@ export default function AdminLoginPage() {
           label="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required
         />
 
         <Input
@@ -55,6 +66,7 @@ export default function AdminLoginPage() {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
         />
 
         <div className="pt-2">
