@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Card } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
@@ -8,12 +8,17 @@ import { Button } from "@/components/ui/Button";
 
 export default function VerifyOtpClient() {
   const router = useRouter();
-  const params = useSearchParams();
+  const searchParams = useSearchParams();
 
-  const [email, setEmail] = useState<string>(params.get("email") || "");
-  const [otp, setOtp] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
-  const [message, setMessage] = useState<string>("");
+  const [email, setEmail] = useState("");
+  const [otp, setOtp] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    const emailFromUrl = searchParams.get("email");
+    if (emailFromUrl) setEmail(emailFromUrl);
+  }, [searchParams]);
 
   const handleVerify = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -30,7 +35,6 @@ export default function VerifyOtpClient() {
       );
 
       if (!res.ok) throw new Error();
-      await res.json();
 
       setMessage("OTP verified successfully");
       setTimeout(() => router.push("/student/login"), 1500);
