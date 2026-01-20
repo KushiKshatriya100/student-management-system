@@ -1,8 +1,9 @@
 import { Suspense } from "react";
 import VerifyOtpClient from "./VerifyOtpClient";
 
-export const dynamic = "force-dynamic"; // 🔥 THIS IS REQUIRED
-export const revalidate = 0;            // 🔥 EXTRA SAFETY (Vercel)
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
+export const revalidate = 0;
 
 export default function VerifyOtpPage() {
   return (
