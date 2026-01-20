@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Card } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
@@ -16,8 +16,8 @@ export default function VerifyOtpClient() {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    const emailFromUrl = searchParams.get("email");
-    if (emailFromUrl) setEmail(emailFromUrl);
+    const e = searchParams.get("email");
+    if (e) setEmail(e);
   }, [searchParams]);
 
   const handleVerify = async (e: React.FormEvent<HTMLFormElement>) => {
