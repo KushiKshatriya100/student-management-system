@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 
-export default function VerifyOtpPage() {
+export default function VerifyOtpClient() {
   const router = useRouter();
   const params = useSearchParams();
 
@@ -29,8 +29,8 @@ export default function VerifyOtpPage() {
         }
       );
 
-      await res.json();
       if (!res.ok) throw new Error();
+      await res.json();
 
       setMessage("OTP verified successfully");
       setTimeout(() => router.push("/student/login"), 1500);
@@ -44,9 +44,7 @@ export default function VerifyOtpPage() {
   return (
     <div className="max-w-md mx-auto mt-20">
       <Card>
-        <h1 className="text-xl font-semibold mb-6">
-          Verify OTP
-        </h1>
+        <h1 className="text-xl font-semibold mb-6">Verify OTP</h1>
 
         <form onSubmit={handleVerify} className="space-y-4">
           <Input
@@ -63,9 +61,7 @@ export default function VerifyOtpPage() {
         </form>
 
         {message && (
-          <p className="text-sm text-center mt-4">
-            {message}
-          </p>
+          <p className="text-sm text-center mt-4">{message}</p>
         )}
       </Card>
     </div>
